@@ -2,6 +2,7 @@ import React, {
   createContext,
   FC,
   Reducer,
+  useContext,
   useEffect,
   useReducer,
 } from "react";
@@ -47,11 +48,10 @@ type Action =
   | ["reset"];
 
 const Context = createContext(initialState);
+
 Context.displayName = "PomContext";
 
-export const Provider: FC = (props) => (
-  <Context.Provider {...props} value={initialState} />
-);
+export const usePom = (): State => useContext(Context);
 
 const reducer: Reducer<State, Action> = (state, [type, value]) => {
   switch (type) {
@@ -107,7 +107,7 @@ const reducer: Reducer<State, Action> = (state, [type, value]) => {
   }
 };
 
-export const usePom = (): State => {
+export const Provider: FC = (props) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   useEffect(() => {
@@ -130,13 +130,18 @@ export const usePom = (): State => {
     };
   }, [state.status]);
 
-  return {
-    ...state,
-    pause: () => dispatch(["pause"]),
-    setRest: (rest) => dispatch(["set-rest", rest]),
-    setWork: (work) => dispatch(["set-work", work]),
-    startRest: () => dispatch(["start-resting"]),
-    startWork: () => dispatch(["start-working"]),
-    reset: () => dispatch(["reset"]),
-  };
+  return (
+    <Context.Provider
+      {...props}
+      value={{
+        ...state,
+        pause: () => dispatch(["pause"]),
+        setRest: (rest) => dispatch(["set-rest", rest]),
+        setWork: (work) => dispatch(["set-work", work]),
+        startRest: () => dispatch(["start-resting"]),
+        startWork: () => dispatch(["start-working"]),
+        reset: () => dispatch(["reset"]),
+      }}
+    />
+  );
 };
