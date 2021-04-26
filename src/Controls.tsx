@@ -1,4 +1,4 @@
-import React, { CSSProperties, FC } from "react";
+import React, { CSSProperties, FC, useRef } from "react";
 import { usePom } from "./use-pom";
 
 const style: { [key: string]: CSSProperties } = {
@@ -15,22 +15,19 @@ const style: { [key: string]: CSSProperties } = {
 };
 
 const Controls: FC = () => {
-  const rest = 1;
-  const work = 3;
+  const { remaining, status, pause, startRest, startWork, reset } = usePom();
 
-  const { remaining, status, pause, startRest, startWork } = usePom({
-    defaultRest: rest,
-    defaultWork: work,
-  });
+  const rest = useRef(remaining.rest);
+  const work = useRef(remaining.work);
 
   return (
     <section style={style.section}>
       <p style={style.p}>status: {status}</p>
       <p style={style.p}>
-        rest: {remaining.rest} / {rest}
+        rest: {remaining.rest} / {rest.current}
       </p>
       <p style={style.p}>
-        work: {remaining.work} / {work}
+        work: {remaining.work} / {work.current}
       </p>
 
       <button
@@ -53,6 +50,9 @@ const Controls: FC = () => {
         style={style.button}
       >
         work
+      </button>
+      <button onClick={reset} style={{ ...style.button, color: "red" }}>
+        reset
       </button>
     </section>
   );
