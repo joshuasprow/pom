@@ -6,8 +6,7 @@ const style: CSSProperties = {
 };
 
 const sendProgress = () => {
-  console.dir((window as any).electron);
-  (window as any).electron.sendProgress();
+  window.electron.sendProgress();
 };
 
 const Controls: FC = () => {
