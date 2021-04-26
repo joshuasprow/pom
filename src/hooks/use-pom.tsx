@@ -42,11 +42,11 @@ export const Provider: FC = (props) => {
       value={{
         ...state,
         pause: () => dispatch(["pause"]),
+        reset: () => dispatch(["reset"]),
         setRest: (rest) => dispatch(["set-rest", rest]),
         setWork: (work) => dispatch(["set-work", work]),
         startRest: () => dispatch(["start-resting"]),
         startWork: () => dispatch(["start-working"]),
-        reset: () => dispatch(["reset"]),
       }}
     />
   );

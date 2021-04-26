@@ -12,23 +12,42 @@ export type UsePomAction =
 
 type Func = (state: UsePomState, value: UsePomAction[1]) => UsePomState;
 
-export const pauseAction: Func = (state) => ({ ...state, status: "paused" });
+export const pauseAction: Func = (state) => {
+  window.electron.sendProgress(-1);
 
-export const restAction: Func = (state) =>
-  state.rest.remaining === 0
-    ? { ...state, status: "paused" }
-    : {
-        ...state,
-        rest: { ...state.rest, remaining: state.rest.remaining - 1 },
-      };
+  return { ...state, status: "paused" };
+};
 
-export const workAction: Func = (state) =>
-  state.work.remaining === 0
-    ? { ...state, status: "paused" }
-    : {
-        ...state,
-        work: { ...state.work, remaining: state.work.remaining - 1 },
-      };
+export const restAction: Func = (state, value) => {
+  if (state.rest.remaining === 0) {
+    return pauseAction(state, value);
+  }
+
+  const remaining = state.rest.remaining - 1;
+
+  window.electron.sendProgress(remaining / state.rest.max);
+
+  return {
+    ...state,
+    rest: { ...state.rest, remaining },
+  };
+};
+
+export const workAction: Func = (state) => {
+  if (state.work.remaining === 0) {
+    window.electron.sendProgress(null);
+    return { ...state, status: "paused" };
+  }
+
+  const remaining = state.work.remaining - 1;
+
+  window.electron.sendProgress(remaining / state.work.max);
+
+  return {
+    ...state,
+    work: { ...state.work, remaining },
+  };
+};
 
 export const setRestAction: Func = (state, value) => {
   let remaining = state.rest.remaining;

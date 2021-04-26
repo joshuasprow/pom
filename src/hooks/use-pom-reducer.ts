@@ -14,10 +14,13 @@ import {
 type Status = "paused" | "resting" | "working";
 
 export const initialPomState = {
-  rest: { max: 1, remaining: 1 },
-  work: { max: 3, remaining: 3 },
+  rest: { max: 4, remaining: 4 },
+  work: { max: 20, remaining: 20 },
   status: "paused" as Status,
   pause(): void {
+    //
+  },
+  reset(): void {
     //
   },
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -32,9 +35,6 @@ export const initialPomState = {
     //
   },
   startWork(): void {
-    //
-  },
-  reset(): void {
     //
   },
 };
