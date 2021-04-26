@@ -1,4 +1,10 @@
-import React, { ChangeEventHandler, FC, useEffect, useState } from "react";
+import React, {
+  ChangeEventHandler,
+  FC,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 
 type BaseProps = Omit<
   React.DetailedHTMLProps<
@@ -14,6 +20,8 @@ interface Props extends BaseProps {
 }
 
 const InputNumber: FC<Props> = ({ onChange, value, ...props }) => {
+  const input = useRef<HTMLInputElement>(null);
+
   const [numberVal, setNumberVal] = useState(value);
 
   const handleChange: ChangeEventHandler<HTMLInputElement> = (event) =>
@@ -31,10 +39,17 @@ const InputNumber: FC<Props> = ({ onChange, value, ...props }) => {
 
   useEffect(() => {
     onChange(numberVal);
+
+    if (numberVal === 0) input.current?.select();
   }, [numberVal]);
 
   return (
-    <input {...props} onChange={handleChange} value={numberVal.toString()} />
+    <input
+      {...props}
+      onChange={handleChange}
+      ref={input}
+      value={numberVal.toString()}
+    />
   );
 };
 
