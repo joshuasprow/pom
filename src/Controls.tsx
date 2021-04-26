@@ -33,13 +33,25 @@ const Controls: FC = () => {
         work: {remaining.work} / {work}
       </p>
 
-      <button onClick={pause} style={style.button}>
+      <button
+        disabled={status === "paused"}
+        onClick={pause}
+        style={style.button}
+      >
         pause
       </button>
-      <button onClick={startRest} style={style.button}>
+      <button
+        disabled={status === "resting"}
+        onClick={startRest}
+        style={style.button}
+      >
         rest
       </button>
-      <button onClick={startWork} style={style.button}>
+      <button
+        disabled={status === "working"}
+        onClick={startWork}
+        style={style.button}
+      >
         work
       </button>
     </section>
