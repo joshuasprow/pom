@@ -61,6 +61,8 @@ const Controls: FC = () => {
             value={nextRest}
           />
         </label>
+        <button onClick={() => setRest(nextRest)}>set rest</button>
+
         <label htmlFor="work-input" style={style.label}>
           work
           <InputNumber
@@ -70,6 +72,8 @@ const Controls: FC = () => {
             value={nextWork}
           />
         </label>
+
+        <button onClick={() => setWork(nextWork)}>set work</button>
       </div>
 
       <div style={style.div}>
