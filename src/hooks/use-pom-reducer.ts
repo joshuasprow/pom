@@ -1,5 +1,15 @@
 import { Reducer } from "react";
-import { UsePomAction } from "./use-pom-actions";
+import {
+  pauseAction,
+  resetAction,
+  restAction,
+  setRestAction,
+  setWorkAction,
+  startRestingAction,
+  startWorkingAction,
+  UsePomAction,
+  workAction,
+} from "./use-pom-actions";
 
 type Status = "paused" | "resting" | "working";
 
@@ -34,54 +44,21 @@ export type UsePomState = typeof initialPomState;
 const reducer: Reducer<UsePomState, UsePomAction> = (state, [type, value]) => {
   switch (type) {
     case "pause":
-      return { ...state, status: "paused" };
+      return pauseAction(state, value);
     case "rest":
-      if (state.rest.remaining === 0) {
-        return { ...state, status: "paused" };
-      }
-      return {
-        ...state,
-        rest: { ...state.rest, remaining: state.rest.remaining - 1 },
-      };
+      return restAction(state, value);
     case "work":
-      if (state.work.remaining === 0) {
-        return { ...state, status: "paused" };
-      }
-      return {
-        ...state,
-        work: { ...state.work, remaining: state.work.remaining - 1 },
-      };
-    case "set-rest": {
-      let remaining = state.rest.remaining;
-      const max =
-        typeof value === "number" ? value : initialPomState.rest.remaining;
-
-      if (remaining >= max) remaining = max;
-
-      return { ...state, status: "paused", rest: { remaining, max } };
-    }
-    case "set-work": {
-      let remaining = state.work.remaining;
-      const max =
-        typeof value === "number" ? value : initialPomState.work.remaining;
-
-      if (remaining >= max) remaining = max;
-
-      return { ...state, status: "paused", work: { remaining, max } };
-    }
+      return workAction(state, value);
+    case "set-rest":
+      return setRestAction(state, value);
+    case "set-work":
+      return setWorkAction(state, value);
     case "start-resting":
-      return { ...state, status: "resting" };
+      return startRestingAction(state, value);
     case "start-working":
-      return { ...state, status: "working" };
-    case "reset": {
-      const { rest, work } = state;
-
-      return {
-        ...initialPomState,
-        rest: { ...rest, remaining: rest.max },
-        work: { ...work, remaining: work.max },
-      };
-    }
+      return startWorkingAction(state, value);
+    case "reset":
+      return resetAction(state, value);
     default:
       throw new Error(`No handler for action type: ${type}`);
   }
