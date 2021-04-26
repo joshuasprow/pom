@@ -79,7 +79,7 @@ const reducer: Reducer<State, Action> = (state, [type, value]) => {
 
       if (remaining >= max) remaining = max;
 
-      return { ...state, rest: { remaining, max } };
+      return { ...state, status: "paused", rest: { remaining, max } };
     }
     case "set-work": {
       let remaining = state.work.remaining;
@@ -87,7 +87,7 @@ const reducer: Reducer<State, Action> = (state, [type, value]) => {
 
       if (remaining >= max) remaining = max;
 
-      return { ...state, work: { remaining, max } };
+      return { ...state, status: "paused", work: { remaining, max } };
     }
     case "start-resting":
       return { ...state, status: "resting" };
