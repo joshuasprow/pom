@@ -1,6 +1,6 @@
 import React, { FC, useState } from "react";
 import InputNumber from "./InputNumber";
-import { usePom } from "./use-pom";
+import { usePom } from "./hooks/use-pom";
 
 const Config: FC = () => {
   const { rest, work, setRest, setWork } = usePom();

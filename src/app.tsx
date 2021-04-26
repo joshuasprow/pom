@@ -3,7 +3,7 @@ import * as ReactDOM from "react-dom";
 import Config from "./Config";
 import Controls from "./Controls";
 import Info from "./Info";
-import { Provider } from "./use-pom";
+import { Provider } from "./hooks/use-pom";
 
 const style: React.CSSProperties = {
   fontFamily: "monospace",

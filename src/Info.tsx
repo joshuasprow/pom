@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { usePom } from "./use-pom";
+import { usePom } from "./hooks/use-pom";
 
 const style = {
   display: "block",
