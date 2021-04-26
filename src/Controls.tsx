@@ -5,12 +5,21 @@ const style: CSSProperties = {
   display: "inline-block",
 };
 
-const sendProgress = () => {
-  window.electron.sendProgress();
-};
-
 const Controls: FC = () => {
-  const { status, pause, startRest, startWork, reset } = usePom();
+  const { rest, work, status, pause, startRest, startWork, reset } = usePom();
+
+  const sendProgress = () => {
+    let progress: number | null = null;
+
+    if (status === "resting") {
+      progress = rest.remaining / rest.max;
+    }
+    if (status === "working") {
+      progress = work.remaining / work.max;
+    }
+
+    window.electron.sendProgress(progress);
+  };
 
   return (
     <>

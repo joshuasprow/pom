@@ -75,7 +75,8 @@ const reducer: Reducer<State, Action> = (state, [type, value]) => {
       };
     case "set-rest": {
       let remaining = state.rest.remaining;
-      const max = value;
+      const max =
+        typeof value === "number" ? value : initialState.rest.remaining;
 
       if (remaining >= max) remaining = max;
 
@@ -83,7 +84,8 @@ const reducer: Reducer<State, Action> = (state, [type, value]) => {
     }
     case "set-work": {
       let remaining = state.work.remaining;
-      const max = value;
+      const max =
+        typeof value === "number" ? value : initialState.work.remaining;
 
       if (remaining >= max) remaining = max;
 

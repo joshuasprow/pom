@@ -2,7 +2,7 @@ export {};
 declare global {
   interface Window extends Window {
     electron: {
-      sendProgress(): void;
+      sendProgress(percent: null | number): void;
     };
   }
 }
