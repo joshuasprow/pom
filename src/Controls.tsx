@@ -5,6 +5,11 @@ const style: CSSProperties = {
   display: "inline-block",
 };
 
+const sendProgress = () => {
+  console.dir((window as any).electron);
+  (window as any).electron.sendProgress();
+};
+
 const Controls: FC = () => {
   const { status, pause, startRest, startWork, reset } = usePom();
 
@@ -22,6 +27,7 @@ const Controls: FC = () => {
       <button onClick={reset} style={{ ...style, color: "red" }}>
         reset
       </button>
+      <button onClick={sendProgress}>send</button>
     </>
   );
 };
