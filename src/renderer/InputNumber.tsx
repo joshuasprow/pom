@@ -14,12 +14,12 @@ type BaseProps = Omit<
   "onChange" | "value"
 >;
 
-interface Props extends BaseProps {
+export interface InputNumberProps extends BaseProps {
   onChange(value: number): void;
   value: number;
 }
 
-const InputNumber: FC<Props> = ({ onChange, value, ...props }) => {
+const InputNumber: FC<InputNumberProps> = ({ onChange, value, ...props }) => {
   const input = useRef<HTMLInputElement>(null);
 
   const [numberVal, setNumberVal] = useState(value);

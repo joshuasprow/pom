@@ -1,0 +1,13 @@
+.max-input {
+  display: flex;
+  margin-bottom: 0.5rem;
+}
+
+.max-input__label-text {
+  margin-right: 0.5rem;
+}
+
+.max-input__input {
+  font-family: monospace;
+  width: 5ch;
+}

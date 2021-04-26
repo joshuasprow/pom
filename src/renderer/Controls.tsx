@@ -6,20 +6,7 @@ const style: CSSProperties = {
 };
 
 const Controls: FC = () => {
-  const { rest, work, status, pause, startRest, startWork, reset } = usePom();
-
-  const sendProgress = () => {
-    let progress: number | null = null;
-
-    if (status === "resting") {
-      progress = rest.remaining / rest.max;
-    }
-    if (status === "working") {
-      progress = work.remaining / work.max;
-    }
-
-    window.electron.sendProgress(progress);
-  };
+  const { status, pause, startRest, startWork, reset } = usePom();
 
   return (
     <>
@@ -35,7 +22,6 @@ const Controls: FC = () => {
       <button onClick={reset} style={{ ...style, color: "red" }}>
         reset
       </button>
-      <button onClick={sendProgress}>send</button>
     </>
   );
 };

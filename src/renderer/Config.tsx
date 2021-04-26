@@ -1,37 +1,45 @@
 import React, { FC, useState } from "react";
-import InputNumber from "./InputNumber";
 import { usePom } from "./hooks/use-pom";
+import InputNumber, { InputNumberProps } from "./InputNumber";
+import "./Config.css";
+
+const MaxInput: FC<{
+  initialValue: InputNumberProps["value"];
+  label: string;
+  onOk: InputNumberProps["onChange"];
+}> = ({ label, onOk, initialValue }) => {
+  const [max, setMax] = useState(initialValue);
+
+  const handleChange: InputNumberProps["onChange"] = (next) => setMax(next);
+
+  const handleOk = () => onOk(max);
+
+  return (
+    <div className="max-input">
+      <label className="max-input__label" htmlFor={`${label}-input`}>
+        <span className="max-input__label-text">{label}</span>
+        <InputNumber
+          id={`${label}-input`}
+          className="max-input__input"
+          onChange={handleChange}
+          type="text"
+          value={max}
+        />
+      </label>
+      <button className="max-input__button" onClick={handleOk}>
+        ✔
+      </button>
+    </div>
+  );
+};
 
 const Config: FC = () => {
   const { rest, work, setRest, setWork } = usePom();
 
-  const [nextRest, setNextRest] = useState(rest.max);
-  const [nextWork, setNextWork] = useState(work.max);
-
   return (
     <>
-      <label htmlFor="rest-input" style={{ display: "block" }}>
-        rest
-        <InputNumber
-          id="rest-input"
-          onChange={setNextRest}
-          type="text"
-          value={nextRest}
-        />
-      </label>
-      <button onClick={() => setRest(nextRest)}>set rest</button>
-
-      <label htmlFor="work-input" style={{ display: "block" }}>
-        work
-        <InputNumber
-          id="work-input"
-          onChange={setNextWork}
-          type="text"
-          value={nextWork}
-        />
-      </label>
-
-      <button onClick={() => setWork(nextWork)}>set work</button>
+      <MaxInput initialValue={rest.max} label="rest" onOk={setRest} />
+      <MaxInput initialValue={work.max} label="work" onOk={setWork} />
     </>
   );
 };
