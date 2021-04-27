@@ -1,7 +1,9 @@
-import { app, BrowserWindow, ipcMain, Notification } from "electron";
+import { app, BrowserWindow } from "electron";
+import { addIpcListeners } from "./ipc";
+import { createWindow } from "./window";
 
-declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
-declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: string;
+export declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
+export declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: string;
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require("electron-squirrel-startup")) {
@@ -9,52 +11,13 @@ if (require("electron-squirrel-startup")) {
   app.quit();
 }
 
-const createWindow = (): BrowserWindow => {
-  // Create the browser window.
-  const mainWindow = new BrowserWindow({
-    height: 600,
-    width: 800,
-    webPreferences: {
-      contextIsolation: true,
-      preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
-    },
-  });
-
-  // and load the index.html of the app.
-  mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
-
-  // Open the DevTools.
-  // mainWindow.webContents.openDevTools();
-
-  return mainWindow;
-};
-
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on("ready", () => {
   const win = createWindow();
 
-  ipcMain.on("notification", (_, message: string) => {
-    const notification = new Notification({
-      body: message,
-      icon: "/Users/joshuasprow/Projects/sandbox/pom/src/renderer/tomato.png",
-      title: "Pom",
-    });
-
-    notification.show();
-  });
-
-  ipcMain.on("progress", (_, percent: null | number) => {
-    if (percent === null) {
-      win.setProgressBar(-1);
-      return;
-    }
-
-    const progress = 1 - percent;
-
-    win.setProgressBar(progress, { mode: "normal" });
-  });
+  addIpcListeners(win);
 });
 
 // Quit when all windows are closed, except on macOS. There, it's common
@@ -73,6 +36,3 @@ app.on("activate", () => {
     createWindow();
   }
 });
-
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and import them here.
