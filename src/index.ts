@@ -51,7 +51,9 @@ app.on("ready", () => {
       return;
     }
 
-    win.setProgressBar(percent, { mode: "normal" });
+    const progress = 1 - percent;
+
+    win.setProgressBar(progress, { mode: "normal" });
   });
 });
 
