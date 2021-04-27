@@ -11,12 +11,13 @@ import {
   workAction,
 } from "./use-pom-actions";
 
-type Status = "paused" | "resting" | "working";
+export const pomStatuses = ["paused", "resting", "working"];
+type PomStatus = typeof pomStatuses[number];
 
 export const initialPomState = {
   rest: { max: 4, remaining: 4 },
   work: { max: 20, remaining: 20 },
-  status: "paused" as Status,
+  status: "paused" as PomStatus,
   pause(): void {
     //
   },

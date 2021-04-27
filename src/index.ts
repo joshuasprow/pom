@@ -1,4 +1,5 @@
 import { app, BrowserWindow } from "electron";
+import Store from "electron-store";
 import { addIpcListeners } from "./ipc";
 import { createWindow } from "./window";
 
@@ -8,6 +9,17 @@ if (require("electron-squirrel-startup")) {
   app.quit();
 }
 
+const initializeStore = () => {
+  try {
+    const store = new Store();
+
+    store.set("unicorn", "🦄");
+    console.log(store.get("unicorn"));
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
@@ -15,6 +27,10 @@ app.on("ready", () => {
   const win = createWindow();
 
   addIpcListeners(win);
+
+  console.log("CONFIG_DIR", app.getPath("userData"));
+
+  initializeStore();
 });
 
 // Quit when all windows are closed, except on macOS. There, it's common
