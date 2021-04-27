@@ -22,6 +22,9 @@ const Controls: FC = () => {
       <button onClick={reset} style={{ ...style, color: "red" }}>
         reset
       </button>
+      <button onClick={() => window.electron.notify("test notification")}>
+        notify
+      </button>
     </>
   );
 };

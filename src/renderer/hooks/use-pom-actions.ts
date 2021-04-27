@@ -20,6 +20,8 @@ export const pauseAction: Func = (state) => {
 
 export const restAction: Func = (state, value) => {
   if (state.rest.remaining === 0) {
+    window.electron.notify("Time to make the donuts!");
+
     return pauseAction(state, value);
   }
 
@@ -33,10 +35,11 @@ export const restAction: Func = (state, value) => {
   };
 };
 
-export const workAction: Func = (state) => {
+export const workAction: Func = (state, value) => {
   if (state.work.remaining === 0) {
-    window.electron.sendProgress(null);
-    return { ...state, status: "paused" };
+    window.electron.notify("Done working. Take a break!");
+
+    return pauseAction(state, value);
   }
 
   const remaining = state.work.remaining - 1;

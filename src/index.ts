@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain } from "electron";
+import { app, BrowserWindow, ipcMain, Notification } from "electron";
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
 declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: string;
@@ -34,6 +34,16 @@ const createWindow = (): BrowserWindow => {
 // Some APIs can only be used after this event occurs.
 app.on("ready", () => {
   const win = createWindow();
+
+  ipcMain.on("notification", (_, message: string) => {
+    const notification = new Notification({
+      body: message,
+      icon: "/Users/joshuasprow/Projects/sandbox/pom/src/renderer/tomato.png",
+      title: "Pom",
+    });
+
+    notification.show();
+  });
 
   ipcMain.on("progress", (_, percent: null | number) => {
     if (percent === null) {

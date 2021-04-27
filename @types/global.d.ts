@@ -11,6 +11,7 @@ export {};
 declare global {
   interface Window extends Window {
     electron: {
+      notify(message: string): void;
       sendProgress(percent: null | number): void;
     };
   }
